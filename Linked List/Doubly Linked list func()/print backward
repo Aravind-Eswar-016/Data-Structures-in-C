@@ -1,0 +1,16 @@
+void print_backward(struct node** head) {
+    if (*head == NULL) {
+        return;
+    }
+
+    struct node* temp = *head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->prev;
+    }
+    printf("\n");
+}
