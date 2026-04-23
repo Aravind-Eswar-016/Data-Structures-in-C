@@ -1,0 +1,19 @@
+void insert_beg(struct node** head, int val) {
+    struct node* new = (struct node*)malloc(sizeof(struct node));
+    new->data = val;
+    new->next = NULL;
+
+    if (*head == NULL) {
+        new->next = new;
+        *head = new;
+        return;
+    }
+
+    struct node* temp = *head;
+    while (temp->next != *head) {
+        temp = temp->next;
+    }
+    new->next = *head;
+    temp->next = new;
+    *head = new;
+}
