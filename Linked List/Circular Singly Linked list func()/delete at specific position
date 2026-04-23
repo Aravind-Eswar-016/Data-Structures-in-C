@@ -1,0 +1,37 @@
+void del_pos(struct node** head, int pos) {
+    if (*head == NULL) {
+        printf("Out of Range\n");
+        return;
+    }
+
+    if (pos == 1) {
+        if ((*head)->next == *head) {
+            free(*head);
+            *head = NULL;
+            return;
+        }
+
+        struct node* temp = *head;
+        while (temp->next != *head) {
+            temp = temp->next;
+        }
+        struct node* todel = *head;
+        temp->next = (*head)->next;
+        *head = (*head)->next;
+        free(todel);
+        return;
+    }
+
+    struct node* prev = *head;
+    struct node* curr = *head;
+    for (int i = 1; i < pos; i++) {
+        prev = curr;
+        curr = curr->next;
+        if (curr == *head) {
+            printf("Out of Range\n");
+            return;
+        }
+    }
+    prev->next = curr->next;
+    free(curr);
+}
