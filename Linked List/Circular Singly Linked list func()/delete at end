@@ -1,0 +1,18 @@
+void del_end(struct node** head) {
+    if (*head == NULL) {
+        return;
+    }
+
+    if ((*head)->next == *head) {
+        free(*head);
+        *head = NULL;
+        return;
+    }
+
+    struct node* temp = *head;
+    while (temp->next->next != *head) {
+        temp = temp->next;
+    }
+    free(temp->next);
+    temp->next = *head;
+}
