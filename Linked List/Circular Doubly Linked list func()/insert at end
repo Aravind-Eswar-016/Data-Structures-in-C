@@ -1,0 +1,19 @@
+void insert_end(struct node** head, int val) {
+    struct node* new = (struct node*)malloc(sizeof(struct node));
+    new->data = val;
+    new->prev = NULL;
+    new->next = NULL;
+
+    if (*head == NULL) {
+        new->next = new;
+        new->prev = new;
+        *head = new;
+        return;
+    }
+
+    struct node* last = (*head)->prev;
+    last->next = new;
+    new->prev = last;
+    new->next = *head;
+    (*head)->prev = new;
+}
