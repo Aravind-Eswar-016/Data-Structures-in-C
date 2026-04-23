@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+void push(char ch) {
+    stack[++top] = ch;
+}
+
+char pop() {
+    return stack[top--];
+}
+
+char peek() {
+    return stack[top];
+}
+
+int isEmpty() {
+    if (top == -1)
+        return 1;
+    else
+        return 0;
+}
+
+int isOperand(char ch) {
+    if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9'))
+        return 1;
+    else
+        return 0;
+}
+
+int precedence(char ch) {
+    if (ch == '*' || ch == '/')
+        return 2;
+    else if (ch == '+' || ch == '-')
+        return 1;
+    else
+        return 0;
+}
+
+void infixToPostfix(char infix[], char postfix[]) {
+    int j = 0;
+
+    for (int i = 0; i < strlen(infix); i++) { 
+
+        if (isOperand(infix[i])) {
+            postfix[j++] = infix[i];
+
+        } else if (infix[i] == '(') {
+            push(infix[i]);
+
+        } else if (infix[i] == ')') {
+            while (isEmpty() == 0 && peek() != '(') {
+                postfix[j++] = pop();  //to existing add operator to postfix.
+            }
+            pop();  //to del '('.
+
+        } else {
+            while (isEmpty() == 0 && precedence(peek()) >= precedence(infix[i])) {
+                postfix[j++] = pop();
+            }
+            push(infix[i]);
+        }
+    }
+
+    while (isEmpty() == 0) {
+        postfix[j++] = pop();
+    }
+
+    postfix[j] = '\0';
+}
+
+int main() {
+    char infix[MAX];
+    char postfix[MAX];
+
+    scanf("%s", infix);
+
+    infixToPostfix(infix, postfix);
+
+    printf("%s", postfix);
+
+    return 0;
+}
+/*
+```
+
+---
+
+**First understand — what is infix and postfix:**
+```
+Infix   :  A + B * C       (operator BETWEEN operands — what we write normally)
+Postfix :  A B C * +       (operator AFTER operands  — what computer prefers)
+*/
