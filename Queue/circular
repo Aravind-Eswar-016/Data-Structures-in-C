@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <string.h>
+
+int queue[1000];
+int front = 0;
+int rear  = 0;
+int count = 0;
+
+void enqueue(int seat) {
+    if (count == capacity) {
+        printf("Booking failed\n");
+        return;
+    }
+    queue[rear] = seat;
+    rear = (rear + 1) % capacity;
+    count++;
+    printf("Booked seat: %d\n", seat);
+}
+
+void dequeue() {
+    if (count == 0) {
+        printf("No booking to cancel\n");
+        return;
+    }
+    printf("Canceled seat: %d\n", queue[front]);
+    front = (front + 1) % capacity;
+    count--;
+}
+
+void frontSeat() {
+    if (count == 0) {
+        printf("No bookings\n");
+        return;
+    }
+    printf("Next seat to be canceled: %d\n", queue[front]);
+}
+
+void isFull() {
+    if (count == capacity)
+        printf("true\n");
+    else
+        printf("false\n");
+}
+
+void isEmpty() {
+    if (count == 0)
+        printf("true\n");
+    else
+        printf("false\n");
+}
+
+int main() {
+    int n, capacity;
+    scanf("%d", &capacity);
+    scanf("%d", &n);
+
+    char operation[20];
+    int seat;
+
+    for (int i = 0; i < n; i++) {
+        scanf("%s", operation);
+        if (strcmp(operation, "enqueue") == 0) {
+            scanf("%d", &seat);
+            enqueue(seat);
+        } else if (strcmp(operation, "dequeue") == 0) {
+            dequeue();
+        } else if (strcmp(operation, "front") == 0) {
+            frontSeat();
+        } else if (strcmp(operation, "isFull") == 0) {
+            isFull();
+        } else if (strcmp(operation, "isEmpty") == 0) {
+            isEmpty();
+        }
+    }
+
+    return 0;
+}
