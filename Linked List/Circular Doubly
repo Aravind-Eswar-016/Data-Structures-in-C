@@ -1,0 +1,223 @@
+//Circular Doubly Linked list
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node* prev;
+    struct node* next;
+};
+
+void insert_end(struct node** head, int val) {
+    struct node* new = (struct node*)malloc(sizeof(struct node));
+    new->data = val;
+    new->prev = NULL;
+    new->next = NULL;
+
+    if (*head == NULL) {
+        new->next = new;
+        new->prev = new;
+        *head = new;
+        return;
+    }
+
+    struct node* last = (*head)->prev;
+    last->next = new;
+    new->prev = last;
+    new->next = *head;
+    (*head)->prev = new;
+}
+
+void insert_beg(struct node** head, int val) {
+    struct node* new = (struct node*)malloc(sizeof(struct node));
+    new->data = val;
+    new->prev = NULL;
+    new->next = NULL;
+
+    if (*head == NULL) {
+        new->next = new;
+        new->prev = new;
+        *head = new;
+        return;
+    }
+
+    struct node* last = (*head)->prev;
+    new->next = *head;
+    new->prev = last;
+    (*head)->prev = new;
+    last->next = new;
+    *head = new;
+}
+
+void insert_pos(struct node** head, int pos, int val) {
+    struct node* inode = (struct node*)malloc(sizeof(struct node));
+    inode->data = val;
+    inode->prev = NULL;
+    inode->next = NULL;
+
+    if (pos == 1) {
+        if (*head == NULL) {
+            inode->next = inode;
+            inode->prev = inode;
+            *head = inode;
+            return;
+        }
+
+        struct node* last = (*head)->prev;
+        inode->next = *head;
+        inode->prev = last;
+        (*head)->prev = inode;
+        last->next = inode;
+        *head = inode;
+        return;
+    }
+
+    struct node* prenode = *head;
+    for (int i = 1; i < pos - 1; i++) {
+        if (prenode->next == *head) { 
+            printf("Out of Range\n");
+            free(inode);
+            return;
+        }
+        prenode = prenode->next;
+    }
+
+    if (prenode->next == *head && pos > 2) { 
+        printf("Out of Range\n");
+        free(inode);
+        return;
+    }
+
+    inode->next = prenode->next;
+    inode->prev = prenode;
+    prenode->next->prev = inode;
+    prenode->next = inode;
+}
+
+void del_end(struct node** head) {
+    if (*head == NULL) {
+        return;
+    }
+
+    if ((*head)->next == *head) {
+        free(*head);
+        *head = NULL;
+        return;
+    }
+
+    struct node* last = (*head)->prev;
+    last->prev->next = *head;
+    (*head)->prev = last->prev;
+    free(last);
+}
+
+void del_beg(struct node** head) {
+    if (*head == NULL) {
+        return;
+    }
+
+    if ((*head)->next == *head) {
+        free(*head);
+        *head = NULL;
+        return;
+    }
+
+    struct node* last = (*head)->prev;
+    struct node* todel = *head;
+    last->next = (*head)->next;
+    (*head)->next->prev = last;
+    *head = (*head)->next;
+    free(todel);
+}
+
+void del_pos(struct node** head, int pos) {
+    if (*head == NULL) {
+        printf("Out of Range\n");
+        return;
+    }
+
+    if (pos == 1) {
+        if ((*head)->next == *head) {
+            free(*head);
+            *head = NULL;
+            return;
+        }
+
+        struct node* last = (*head)->prev;
+        struct node* todel = *head;
+        last->next = (*head)->next;
+        (*head)->next->prev = last;
+        *head = (*head)->next;
+        free(todel);
+        return;
+    }
+
+    struct node* curr = *head;
+    for (int i = 1; i < pos; i++) {
+        curr = curr->next;
+        if (curr == *head) {
+            printf("Out of Range\n");
+            return;
+        }
+    }
+
+    curr->prev->next = curr->next;
+    curr->next->prev = curr->prev;
+    free(curr);
+}
+
+void print_forward(struct node** head) {
+    if (*head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+
+    struct node* ptr = *head;
+    do {
+        printf("%d ", ptr->data);
+        ptr = ptr->next;
+    } while (ptr != *head);
+    printf("\n");
+}
+
+void print_backward(struct node** head) {
+    if (*head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+
+    struct node* ptr = (*head)->prev; 
+    struct node* start = ptr; 
+    do {
+        printf("%d ", ptr->data);
+        ptr = ptr->prev;
+    } while (ptr != start); 
+    printf("\n");
+}
+
+int main(){
+    int n, val;
+    scanf("%d",&n);
+    
+    struct node* head = NULL;
+    
+    for(int i=0; i<n; i++){
+        scanf("%d ",&val);
+        insert_end(&head, val);
+    }
+    
+    int pos, el;
+    scanf("%d",&pos);
+    scanf("%d",&el);
+    insert_pos(&head,pos,el);
+    
+    int pos;
+    scanf("%d",&pos);
+    del_pos(&head,pos);
+    
+    del_beg(&head);
+    
+    print_forward(&head);
+    print_backward(&head);
+    return 0;
+}
