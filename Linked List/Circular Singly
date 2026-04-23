@@ -1,0 +1,207 @@
+//Circular Singly Linked list
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node* next;
+};
+
+void insert_end(struct node** head, int val) {
+    struct node* new = (struct node*)malloc(sizeof(struct node));
+    new->data = val;
+    new->next = NULL;
+
+    if (*head == NULL) {
+        new->next = new;
+        *head = new;
+        return;
+    }
+
+    struct node* temp = *head;
+    while (temp->next != *head) {
+        temp = temp->next;
+    }
+    temp->next = new;
+    new->next = *head;
+}
+
+void insert_beg(struct node** head, int val) {
+    struct node* new = (struct node*)malloc(sizeof(struct node));
+    new->data = val;
+    new->next = NULL;
+
+    if (*head == NULL) {
+        new->next = new;
+        *head = new;
+        return;
+    }
+
+    struct node* temp = *head;
+    while (temp->next != *head) {
+        temp = temp->next;
+    }
+    new->next = *head;
+    temp->next = new;
+    *head = new;
+}
+
+void insert_pos(struct node** head, int pos, int val) {
+    struct node* inode = (struct node*)malloc(sizeof(struct node));
+    inode->data = val;
+    inode->next = NULL;
+
+    if (pos == 1) {
+        if (*head == NULL) {
+            inode->next = inode;
+            *head = inode;
+            return;
+        }
+
+        struct node* temp = *head;
+        while (temp->next != *head) {
+            temp = temp->next;
+        }
+        inode->next = *head;
+        temp->next = inode;
+        *head = inode;
+        return;
+    }
+
+    struct node* prenode = *head;
+    for (int i = 1; i < pos - 1; i++) {
+        if (prenode->next == *head) {
+            printf("Out of Range\n");
+            free(inode);
+            return;
+        }
+        prenode = prenode->next;
+    }
+
+    if (prenode->next == *head && pos > 2) {
+        printf("Out of Range\n");
+        free(inode);
+        return;
+    }
+
+    inode->next = prenode->next;
+    prenode->next = inode;
+}
+
+void del_end(struct node** head) {
+    if (*head == NULL) {
+        return;
+    }
+
+    if ((*head)->next == *head) {
+        free(*head);
+        *head = NULL;
+        return;
+    }
+
+    struct node* temp = *head;
+    while (temp->next->next != *head) {
+        temp = temp->next;
+    }
+    free(temp->next);
+    temp->next = *head;
+}
+
+void del_beg(struct node** head) {
+    if (*head == NULL) {
+        return;
+    }
+
+    if ((*head)->next == *head) {
+        free(*head);
+        *head = NULL;
+        return;
+    }
+
+    struct node* temp = *head;
+    while (temp->next != *head) {
+        temp = temp->next;
+    }
+    struct node* todel = *head;
+    temp->next = (*head)->next;
+    *head = (*head)->next;
+    free(todel);
+}
+
+void del_pos(struct node** head, int pos) {
+    if (*head == NULL) {
+        printf("Out of Range\n");
+        return;
+    }
+
+    if (pos == 1) {
+        if ((*head)->next == *head) {
+            free(*head);
+            *head = NULL;
+            return;
+        }
+
+        struct node* temp = *head;
+        while (temp->next != *head) {
+            temp = temp->next;
+        }
+        struct node* todel = *head;
+        temp->next = (*head)->next;
+        *head = (*head)->next;
+        free(todel);
+        return;
+    }
+
+    struct node* prev = *head;
+    struct node* curr = *head;
+    for (int i = 1; i < pos; i++) {
+        prev = curr;
+        curr = curr->next;
+        if (curr == *head) {
+            printf("Out of Range\n");
+            return;
+        }
+    }
+    prev->next = curr->next;
+    free(curr);
+}
+
+void print(struct node** head) {
+    if (*head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+
+    struct node* ptr = *head;
+    do {
+        printf("%d ", ptr->data);
+        ptr = ptr->next;
+    } while (ptr != *head);
+    printf("\n");
+}
+
+int main(){
+    int n, val;
+    scanf("%d",&n);
+    
+    struct node* head = NULL;
+    
+    for(int i=0; i<n; i++){
+        scanf("%d ",&val);
+        insert_end(&head, val);
+    }
+    
+    int pos, el;
+    scanf("%d",&pos);
+    scanf("%d",&el);
+    insert_pos(&head,pos,el);
+    
+    int pos;
+    scanf("%d",&pos);
+    del_pos(&head,pos);
+    
+    del_beg(&head);
+    
+    print(&head);
+    return 0;
+}
