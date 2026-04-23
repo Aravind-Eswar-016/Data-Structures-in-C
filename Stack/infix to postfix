@@ -85,13 +85,3 @@ int main() {
 
     return 0;
 }
-/*
-```
-
----
-
-**First understand — what is infix and postfix:**
-```
-Infix   :  A + B * C       (operator BETWEEN operands — what we write normally)
-Postfix :  A B C * +       (operator AFTER operands  — what computer prefers)
-*/
