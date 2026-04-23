@@ -1,0 +1,41 @@
+void insert_pos(struct node** head, int pos, int val) {
+    struct node* inode = (struct node*)malloc(sizeof(struct node));
+    inode->data = val;
+    inode->next = NULL;
+
+    if (pos == 1) {
+        if (*head == NULL) {
+            inode->next = inode;
+            *head = inode;
+            return;
+        }
+
+        struct node* temp = *head;
+        while (temp->next != *head) {
+            temp = temp->next;
+        }
+        inode->next = *head;
+        temp->next = inode;
+        *head = inode;
+        return;
+    }
+
+    struct node* prenode = *head;
+    for (int i = 1; i < pos - 1; i++) {
+        if (prenode->next == *head) {
+            printf("Out of Range\n");
+            free(inode);
+            return;
+        }
+        prenode = prenode->next;
+    }
+
+    if (prenode->next == *head && pos > 2) {
+        printf("Out of Range\n");
+        free(inode);
+        return;
+    }
+
+    inode->next = prenode->next;
+    prenode->next = inode;
+}
