@@ -1,0 +1,78 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int *arr;
+int top1, top2, size;
+
+void push1(int x){
+    if(top1 + 1 == top2){
+        printf("Overflow\n");
+        return;
+    }
+    arr[++top1] = x;
+}
+
+void push2(int x){
+    if(top2 - 1 == top1){
+        printf("Overflow\n");
+        return;
+    }
+    arr[--top2] = x;
+}
+
+int pop1(){
+    if(top1 == -1){
+        printf("Underflow\n");
+        return;
+    }
+    printf("%d\n",arr[top1--]);
+}
+
+int pop2(){
+    if(top2 == size){
+        printf("Underflow");
+        return;
+    }
+    printf("%d\n",arr[top2++]);
+}
+
+void disp(){
+    printf("Stack 1:");
+    sor(int i=0; i<=top1 ;i++){
+        printf("%d ",arr[i]);
+    }
+    printf("\n");
+    printf("Stack 2:");
+    for(int i=top2 ; i<size; i++){
+        printf("%d ",arr[i]);
+    }
+    printf("\n");
+}
+
+int main(){
+    scanf("%d",&size);
+
+    arr = (int *) malloc(size * sizeof(int));
+    top1 = -1;
+    top2 = size;
+
+    int cmd, x;
+    while(scanf("%d",&cmd) && cmd != -1){
+        if(cmd == 1){
+            scanf("%d",&x);
+            push1(x);
+        }else if(cmd == 2){
+            scanf("%d",&x);
+            push2(x);
+        }else if(cmd == 3){
+            pop1();
+        }else if(cmd == 4){
+            pop2();
+        }else if(cmd == 5){
+            disp();
+        }
+    }
+
+    free(arr);
+    return 0;
+}
