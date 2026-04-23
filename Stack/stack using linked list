@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct node {
+    int data;
+    struct node* next;
+};
+
+struct node* top = NULL;
+
+void push(int value) {
+    struct node* new = (struct node*)malloc(sizeof(struct node));
+    new->data = value;
+    new->next = top;
+    top = new;
+}
+
+void pop() {
+    if (top == NULL) {
+        printf("Stack Underflow\n");
+        return;
+    }
+    struct node* temp = top;
+    printf("%d\n", top->data);
+    top = top->next;
+    free(temp);
+}
+
+void peek() {
+    if (top == NULL) {
+        printf("Stack Underflow\n");
+        return;
+    }
+    printf("%d\n", top->data);
+}
+
+void isEmpty() {
+    if (top == NULL)
+        printf("true\n");
+    else
+        printf("false\n");
+}
+
+void size() {
+    int count = 0;
+    struct node* temp = top;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    printf("%d\n", count);
+}
+
+int main() {
+    int N;
+    scanf("%d", &N);
+
+    char command[20];
+    int value;
+
+    for (int i = 0; i < N; i++) {
+        scanf("%s", command);
+
+        if (strcmp(command, "Push") == 0) {
+            scanf("%d", &value);
+            push(value);
+        }else if (strcmp(command, "Pop") == 0) {
+            pop();
+        }else if (strcmp(command, "Top") == 0) {
+            peek();
+        }else if (strcmp(command, "IsEmpty") == 0) {
+            isEmpty();
+        }else if (strcmp(command, "Size") == 0) {
+            size();
+        }
+    }
+    return 0;
+}
