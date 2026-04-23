@@ -1,0 +1,28 @@
+void isert_pos(struct node** head, int pos, int val){
+    struct node* inode = (struct node*) malloc(sizeof(struct node));
+    inode->data = val;
+    inode->next = NULL;
+    
+    if(pos == 1){
+        inode->next = *head;
+        *head = inode;
+        return;
+    }
+    
+    struct node* prenode = *head;
+    for(int i=1; i<pos-1; i++){
+        if(prenode == NULL){
+            printf("Out of Range");
+            return;
+        }
+        prenode = prenode->next;
+    }
+    if(prenode == NULL){
+        printf("Out of Range");
+        return;
+    }
+    
+    inode->next = prenode->next;
+    prenode->next = inode;
+    
+}
