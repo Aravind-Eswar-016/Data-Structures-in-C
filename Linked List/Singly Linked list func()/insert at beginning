@@ -1,0 +1,13 @@
+void insert_beg(struct node** head, int val){
+    struct new = (struct node*) malloc(sizeof(struct node));
+    new->data = val;
+    new->next = NULL;
+    
+    if(*head == NULL){
+        *head = new;
+        return;
+    }
+    
+    new->next = *head;
+    *head = new;
+}
