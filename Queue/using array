@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_NAME 100
+
+int MAX;
+int front = -1;
+int rear  = -1;
+
+char queue[100][MAX_NAME];
+
+void enqueue(char name[]) {
+    if (rear == MAX - 1) {
+        printf("Queue is full. Cannot add %s\n", name);
+        return;
+    }
+    if (front == -1)
+        front = 0;
+
+    strcpy(queue[++rear], name);
+}
+
+void dequeue() {
+    if (front == -1 || front > rear) {
+        printf("Served Customer: Queue is empty. No customer to serve.\n");
+        return;
+    }
+    printf("Served Customer: %s\n", queue[front++]);
+
+    if (front > rear) {
+        front = -1;
+        rear  = -1;
+    }
+}
+
+void display() {
+    if (front == -1 || front > rear) {
+        printf("Queue is empty.\n");
+        return;
+    }
+    printf("Current Queue:");
+    for (int i = front; i <= rear; i++) {
+        printf(" %s", queue[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    int n;
+    char command[20];
+    char name[MAX_NAME];
+
+    scanf("%d", &MAX);
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        scanf("%s", command);
+        if (strcmp(command, "ENQUEUE") == 0) {
+            scanf("%s", name);
+            enqueue(name);
+        } else if (strcmp(command, "DEQUEUE") == 0) {
+            dequeue();
+        } else if (strcmp(command, "DISPLAY") == 0) {
+            display();
+        }
+    }
+    return 0;
+}
