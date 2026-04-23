@@ -1,0 +1,13 @@
+void print(struct node** head) {
+    if (*head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+
+    struct node* ptr = *head;
+    do {
+        printf("%d ", ptr->data);
+        ptr = ptr->next;
+    } while (ptr != *head);
+    printf("\n");
+}
