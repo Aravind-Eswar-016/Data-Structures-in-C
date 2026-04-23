@@ -1,0 +1,76 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+struct node{
+    char data[150];
+    struct node* next;
+};
+
+struct node* top = NULL;
+int count = 0;
+
+void push(char* val){
+    struct node* new = (struct node*)malloc(sizeof(struct node));
+    strcpy(new->data,val);
+    new->next = top;
+    top = new;
+    count++;
+}
+
+void pop(){
+    if(top == NULL){
+        printf("Stack Underflow\n");
+        return;
+    }
+   
+    struct node* temp = top; 
+    printf("%s\n",temp->data);
+    top = top->next;
+    free(temp);
+    count--;
+}
+
+void peek(){
+    if(top == NULL){
+        printf("Stack Underflow\n");
+        return;
+    }
+    printf("%s\n", top->data);
+}
+
+void isempty(){
+    if(top == NULL)
+        printf("true\n");
+    else
+        printf("false\n");
+}
+
+void size(){
+    printf("%d\n",count);
+}
+
+int main(){
+    int n;
+    scanf("%d",&n);
+    getchar();  //to remove \n for fgets to read upcoming input.
+    
+    char line[150];
+
+    for(int i=0; i<n; i++){
+        fgets(line, sizeof(line), stdin); //alternative to scanf which checks input at operation.
+        line[strcspn(line, "\n")]=0;  //Reads inpur upto \n .
+        if(strncmp(line, "Push ", 5)==0){ 
+            push(line + 5);
+        }else if(strcmp(line, "Pop")==0){
+            pop();
+        }else if(strcmp(line, "Top")==0){
+            peek();
+        }else if(strcmp(line, "IsEmpty")==0){
+            isempty();
+        }else if(strcmp(line, "Size")==0){
+            size();
+        }
+    }
+    return 0;
+}
