@@ -1,0 +1,55 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<ctype.h>
+
+#define max 100
+
+int stack[max];
+int top = -1;
+
+void push(int val){
+    stack[++top] = val;
+}
+
+int pop(){
+    return stack[top--];
+}
+
+int isOperator(char *token){
+    if( sizeof(token[0]) == 1 && token[0] == '+' || token[0] == '-' || token[0] == '*' || token[0] == '/')
+        return 1;
+else 
+        return 0;
+}
+
+int eval_postfix(char *exp){
+    char *token = strtok(exp, " ");
+    while(token != NULL){
+        if(isOperator(token)){
+            int b = pop();
+            int a = pop();
+
+            switch(token[0]){
+                case '+': push(a+b); break;
+                case '-': push(a-b); break;
+                case '*': push(a*b); break;
+                case '/': push(a/b); break;
+            }
+        }else{
+        push(atoi(token)); 
+        }
+       token = strtok(NULL, " ");
+    }
+    return pop(); //gives final ans stored in stack.
+}
+
+int main(){
+    char exp[max];
+    fgets(exp, max, stdin);
+    exp[strcspn(exp, "\n")]='\0';
+
+    printf("%d\n", eval_postfix(exp));
+
+    return 0;
+}
