@@ -1,0 +1,14 @@
+void print_backward(struct node** head) {
+    if (*head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+
+    struct node* ptr = (*head)->prev; 
+    struct node* start = ptr; 
+    do {
+        printf("%d ", ptr->data);
+        ptr = ptr->prev;
+    } while (ptr != start); 
+    printf("\n");
+}
