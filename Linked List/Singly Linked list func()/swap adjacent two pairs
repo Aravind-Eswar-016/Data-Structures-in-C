@@ -1,0 +1,17 @@
+void swap_pairs(struct node** head) {
+    struct node dummy;
+    dummy.next = *head;
+    struct node* prev = &dummy;
+
+    while (prev->next != NULL && prev->next->next != NULL) {
+        struct node* first  = prev->next;
+        struct node* second = prev->next->next;
+
+        first->next  = second->next;
+        second->next = first;
+        prev->next   = second;
+
+        prev = first;
+    }
+    *head = dummy.next;
+}
