@@ -1,0 +1,18 @@
+void del_beg(struct node** head) {
+    if (*head == NULL) {
+        return;
+    }
+
+    if ((*head)->next == *head) {
+        free(*head);
+        *head = NULL;
+        return;
+    }
+
+    struct node* last = (*head)->prev;
+    struct node* todel = *head;
+    last->next = (*head)->next;
+    (*head)->next->prev = last;
+    *head = (*head)->next;
+    free(todel);
+}
